@@ -1,42 +1,110 @@
-```html
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ดาวน์โหลด Roblox</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-            background-color: #f5f5f5;
-        }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>แจ้งเตือนทานยา</title>
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #f0f8ff;
+            text-align: center;
+            padding: 40px;
+        }
 
-        .btn {
-            display: inline-block;
-            padding: 15px 30px;
-            background-color: #00a2ff;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 20px;
-        }
+        h1 {
+            color: #0077cc;
+        }
 
-        .btn:hover {
-            background-color: #0088d6;
-        }
-    </style>
+        input {
+            padding: 10px;
+            margin: 10px;
+            width: 220px;
+            font-size: 16px;
+            border: 2px solid #5987a8;
+            border-radius: 25px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #28a745;
+            color: white;
+            border: 2px solid #4ea674;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #218838;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            border: 2px solid #4b648d;
+            border-radius: 20px;
+            padding: 15px;
+            background: white;
+            display: inline-block;
+            min-width: 280px;
+        }
+
+        h3 {
+            font-size: 30px;
+            color: #6579be;
+            border: 2px solid #4b648d;
+            border-radius: 20px;
+            padding: 10px;
+            display: inline-block;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        li {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
+    <h1>4D HEALTH</h1>
+    <h2>แจ้งเตือนการรับประทานยา</h2>
 
-    <h1>ดาวน์โหลด Roblox</h1>
-    <p>คลิกปุ่มด้านล่างเพื่อดาวน์โหลด Roblox</p>
+    <input type="text" id="medName" placeholder="ชื่อยา" /><br />
+    <input type="date" id="medDate" /><br />
+    <input type="time" id="medTime" /><br />
 
-    <a class="btn" href="https://www.roblox.com/download" target="_blank">
-        ดาวน์โหลด Roblox
-    </a>
+    <button onclick="addReminder()">บันทึกการแจ้งเตือน</button>
 
+    <div class="result" id="output">กรุณากรอกข้อมูลเพื่อบันทึก</div>
+    <br /><br />
+    <h3>"MEDICINE"<br />Reminder System<br />ระบบแจ้งเตือนยา</h3>
+
+    <script>
+        function addReminder() {
+            const name = document.getElementById("medName").value;
+            const date = document.getElementById("medDate").value;
+            const time = document.getElementById("medTime").value;
+
+            if (!name || !date || !time) {
+                document.getElementById("output").innerText = "กรุณากรอกข้อมูลยา วันที่ และเวลาให้ถูกต้อง";
+                return;
+            }
+
+            document.getElementById("output").innerHTML = `
+                <strong>บันทึกสำเร็จ!</strong><br/>
+                💊 ยา: ${name}<br/>
+                📅 วันที่: ${date}<br/>
+                ⏰ เวลา: ${time} น.
+            `;
+        }
+    </script>
 </body>
 </html>
-```
