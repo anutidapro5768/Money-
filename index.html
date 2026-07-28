@@ -1,110 +1,272 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>แจ้งเตือนทานยา</title>
-    <style>
-        body {
-            font-family: 'Prompt', sans-serif;
-            background: #f0f8ff;
-            text-align: center;
-            padding: 40px;
-        }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ระบบแจ้งเตือนการรับประทานยา</title>
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #f0f8ff;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
 
-        h1 {
-            color: #0077cc;
-        }
+        h1 {
+            color: #0077cc;
+            margin-bottom: 5px;
+        }
 
-        input {
-            padding: 10px;
-            margin: 10px;
-            width: 220px;
-            font-size: 16px;
-            border: 2px solid #5987a8;
-            border-radius: 25px;
-            outline: none;
-            box-sizing: border-box;
-        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #5987a8;
+            max-width: 400px;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
 
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background: #28a745;
-            color: white;
-            border: 2px solid #4ea674;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+        input {
+            padding: 10px;
+            margin: 8px 0;
+            width: 90%;
+            font-size: 15px;
+            border: 2px solid #5987a8;
+            border-radius: 25px;
+            outline: none;
+            box-sizing: border-box;
+        }
 
-        button:hover {
-            background: #218838;
-        }
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background: #28a745;
+            color: white;
+            border: 2px solid #4ea674;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
 
-        .result {
-            margin-top: 20px;
-            font-size: 18px;
-            border: 2px solid #4b648d;
-            border-radius: 20px;
-            padding: 15px;
-            background: white;
-            display: inline-block;
-            min-width: 280px;
-        }
+        button:hover {
+            background: #218838;
+        }
 
-        h3 {
-            font-size: 30px;
-            color: #6579be;
-            border: 2px solid #4b648d;
-            border-radius: 20px;
-            padding: 10px;
-            display: inline-block;
-        }
+        .btn-permission {
+            background: #0077cc;
+            border-color: #0056b3;
+            margin-bottom: 15px;
+        }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: left;
-        }
+        .result-list {
+            margin: 20px auto;
+            max-width: 500px;
+            text-align: left;
+        }
 
-        li {
-            padding: 8px;
-            border-bottom: 1px solid #ddd;
-        }
-    </style>
+        .med-card {
+            background: white;
+            border: 2px solid #4b648d;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .med-info h4 {
+            margin: 0 0 5px 0;
+            color: #0077cc;
+            font-size: 18px;
+        }
+
+        .med-info p {
+            margin: 2px 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            border: 1px solid #bd2130;
+            color: white;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #6579be;
+            border: 2px solid #4b648d;
+            border-radius: 20px;
+            padding: 10px 20px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>4D HEALTH</h1>
-    <h2>แจ้งเตือนการรับประทานยา</h2>
 
-    <input type="text" id="medName" placeholder="ชื่อยา" /><br />
-    <input type="date" id="medDate" /><br />
-    <input type="time" id="medTime" /><br />
+    <h1>4D HEALTH</h1>
+    <h2>ระบบแจ้งเตือนการรับประทานยา</h2>
 
-    <button onclick="addReminder()">บันทึกการแจ้งเตือน</button>
+    <!-- ปุ่มเปิดใช้งานการแจ้งเตือนเสียง/เบราว์เซอร์ -->
+    <button class="btn-permission" onclick="requestNotificationPermission()">🔔 เปิดใช้งานการแจ้งเตือนระบบ</button>
 
-    <div class="result" id="output">กรุณากรอกข้อมูลเพื่อบันทึก</div>
-    <br /><br />
-    <h3>"MEDICINE"<br />Reminder System<br />ระบบแจ้งเตือนยา</h3>
+    <div class="form-container">
+        <input type="text" id="medName" placeholder="ชื่อยา (เช่น พาราเซตามอล)" /><br />
+        <input type="text" id="medDose" placeholder="ขนาดยา (เช่น 500 mg)" /><br />
+        <input type="number" id="medAmount" placeholder="จำนวนทาน (เช่น 1 เม็ด)" min="1" /><br />
+        <input type="time" id="medTime" /><br />
 
-    <script>
-        function addReminder() {
-            const name = document.getElementById("medName").value;
-            const date = document.getElementById("medDate").value;
-            const time = document.getElementById("medTime").value;
+        <button onclick="addReminder()">บันทึกการแจ้งเตือน</button>
+    </div>
 
-            if (!name || !date || !time) {
-                document.getElementById("output").innerText = "กรุณากรอกข้อมูลยา วันที่ และเวลาให้ถูกต้อง";
-                return;
-            }
+    <!-- รายการยาที่บันทึกไว้ -->
+    <div class="result-list" id="medList"></div>
 
-            document.getElementById("output").innerHTML = `
-                <strong>บันทึกสำเร็จ!</strong><br/>
-                💊 ยา: ${name}<br/>
-                📅 วันที่: ${date}<br/>
-                ⏰ เวลา: ${time} น.
-            `;
-        }
-    </script>
+    <h3>"MEDICINE"<br />Reminder System</h3>
+
+    <script>
+        let reminders = JSON.parse(localStorage.getItem("medReminders")) || [];
+
+        // ขออนุญาตใช้การแจ้งเตือนจากเบราว์เซอร์
+        function requestNotificationPermission() {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        alert("เปิดการแจ้งเตือนเรียบร้อยแล้ว!");
+                    } else {
+                        alert("คุณปฏิเสธการแจ้งเตือน ระบบจะไม่สามารถเด้งเตือนได้");
+                    }
+                });
+            } else {
+                alert("เบราว์เซอร์นี้ไม่รองรับการแจ้งเตือน");
+            }
+        }
+
+        // ฟังก์ชันบันทึกข้อมูลยา
+        function addReminder() {
+            const name = document.getElementById("medName").value.trim();
+            const dose = document.getElementById("medDose").value.trim();
+            const amount = document.getElementById("medAmount").value.trim();
+            const time = document.getElementById("medTime").value;
+
+            if (!name || !dose || !amount || !time) {
+                alert("กรุณากรอกข้อมูลให้ครบถ้วนทุกช่องครับ");
+                return;
+            }
+
+            const reminder = {
+                id: Date.now(),
+                name: name,
+                dose: dose,
+                amount: amount,
+                time: time,
+                notifiedToday: false // เช็คว่าวันนี้เตือนไปหรือยัง
+            };
+
+            reminders.push(reminder);
+            saveAndRender();
+
+            // ล้างข้อมูลในช่องกรอก
+            document.getElementById("medName").value = "";
+            document.getElementById("medDose").value = "";
+            document.getElementById("medAmount").value = "";
+            document.getElementById("medTime").value = "";
+        }
+
+        // ลบรายการยา
+        function deleteReminder(id) {
+            reminders = reminders.filter(item => item.id !== id);
+            saveAndRender();
+        }
+
+        // บันทึกลง LocalStorage และแสดงผลบนหน้าจอ
+        function saveAndRender() {
+            localStorage.setItem("medReminders", JSON.stringify(reminders));
+            const listElement = document.getElementById("medList");
+            listElement.innerHTML = "";
+
+            if (reminders.length === 0) {
+                listElement.innerHTML = "<p style='text-align:center; color:#777;'>ยังไม่มีรายการแจ้งเตือนยา</p>";
+                return;
+            }
+
+            reminders.forEach(item => {
+                listElement.innerHTML += `
+                    <div class="med-card">
+                        <div class="med-info">
+                            <h4>💊 ${item.name} (${item.dose})</h4>
+                            <p>📝 ทานครั้งละ: ${item.amount} เม็ด</p>
+                            <p>⏰ เวลาแจ้งเตือน: <strong>${item.time} น.</strong></p>
+                        </div>
+                        <button class="btn-delete" onclick="deleteReminder(${item.id})">ลบ</button>
+                    </div>
+                `;
+            });
+        }
+
+        // ส่งเสียงแจ้งเตือน (Beep Sound)
+        function playAlarmSound() {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(440, ctx.currentTime); // ความถี่เสียง 440Hz
+            gain.gain.setValueAtTime(1, ctx.currentTime);
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start();
+            osc.stop(ctx.currentTime + 1.5); // ดังยาว 1.5 วินาที
+        }
+
+        // ตรวจสอบเวลาทุกๆ 1 วินาที
+        setInterval(() => {
+            const now = new Date();
+            const currentHours = String(now.getHours()).padStart(2, '0');
+            const currentMinutes = String(now.getMinutes()).padStart(2, '0');
+            const currentTimeStr = `${currentHours}:${currentMinutes}`;
+
+            // รีเซ็ตสถานะการแจ้งเตือนตอนเที่ยงคืน
+            if (currentTimeStr === "00:00") {
+                reminders.forEach(item => item.notifiedToday = false);
+            }
+
+            reminders.forEach(item => {
+                if (item.time === currentTimeStr && !item.notifiedToday) {
+                    item.notifiedToday = true;
+                    playAlarmSound();
+
+                    // แสดง Pop-up เตือนบนหน้าจอ
+                    if ("Notification" in window && Notification.permission === "granted") {
+                        new Notification("🚨 ถึงเวลาทานยาแล้ว!", {
+                            body: `ได้เวลาทานยา ${item.name} (${item.dose}) จำนวน ${item.amount} เม็ด`,
+                            icon: "https://cdn-icons-png.flaticon.com/512/883/883407.png"
+                        });
+                    }
+
+                    alert(`🚨 ถึงเวลาทานยาแล้ว!\n\n💊 ยา: ${item.name} (${item.dose})\n📌 ทานจำนวน: ${item.amount} เม็ด`);
+                }
+            });
+        }, 1000);
+
+        // โหลดข้อมูลขึ้นมาแสดงเมื่อเปิดหน้าเว็บ
+        saveAndRender();
+    </script>
+
 </body>
 </html>
